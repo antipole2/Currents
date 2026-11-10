@@ -21,7 +21,9 @@ Alternatively, you can fork the repository if you want to evolve the script.
 
 == What the script does
 
-=== Fixes for waypoint and route names
+The script adds a route context menu with sub-menus which which themslvesvary with context.
+
+=== Currents sub-menus
 [cols="1,2,2"]
 |===
 |Issue|Explanation|Proposed fix
