@@ -1,0 +1,100 @@
+= Technical guide for the Housekeeper script
+
+As this script is quite complex, this guide documents the script's structure and how it works.
+It would be wise to read this before modifying or maintaining the Housekeeper script.
+
+There are two variables set up early on which are useful during debugging.
+
+`var log = false;`
+
+If this is set to true, the script prints its progress and also certain structures developed during the analysis.
+
+`var doSaves = true;`
+
+If this is set to false, the changes are not saved back into OpenCPN even though they are reported.
+This allows testing without the inconvenience of having to restore the OpenCPN data to its previous state.
+
+== Overall approach
+
+The script uses internal JavaScript structures right up until the point where these are saved back into OpenCPN.
+It has thus been possible to develop the script over several weeks without changing any data in OpenCPN.
+The actual update phase is very simple and took only a couple of hours to implement and test.
+
+|===
+|Function|Purpose
+
+|`load()`|Loads the waypoints and routes into JavaScript structures.
+|`analyse()`|Analyses the structures and creates structures recording the issues found
+|`report()`|Prints a report of the issues found and returns the number of issues
+|`WhatToDoA()`|Presents the dialogue through which the user decides on actions relating to waypoints and routes
+|`WhatToDoB()`|Presents a series of dialogues hrough which the user decides on actions relating to each location at which there are multiple points.
+|`doSave()`|Saves the structures back into OpenCPN, thus implementing the changes.
+|===
+
+An advantage of implementing the phases as functions is that they can be repeated if need be.
+For example, if points are removed from a route, that invalidates the indexing created by the analysis.
+The analysis can be redone to update the indexing.
+
+=== `load()`
+
+This reads all waypoints and routes into the standard structures created by the JavaScript plugin.
+It adds an `action` attribute and sets it to the custom symbol `none`.
+During the changes, the action may be set to `remove` or `update` to indicate what action is required of doSave().
+
+Each structure is pushed into an array of structures of `allpoints[]` and `routes[]`.
+
+=== `analyse()`
+
+Both `allpoints[]` and `routes[]` are sorted on their names.
+This allows identification of unnamed and duplicate names.
+
+A point is referenced by its index number in the allpoints array.
+A leg within a route is identified by the index within the routes array and the leg number within that route.
+
+For unnamed entries it is sufficient to build an array of these indexes.
+
+For duplicates, we build a cluster of indexes for a given name and push the cluster onto the array.
+Clusters may contain additional attributes noted during building.
+
+The routepoints are scanned and clusters of successive repeated routepoints built.
+
+Each point is given an extra attribute of 'uses[]', each use identifying the route index and leg number of that use.
+The length of the uses array gives the number of times that point has been included in a route.
+A length greater than 1 indicates the point is being shared.
+
+To identify multiple points at or near the same location, we build a `location` structure.
+Each location contains its position and an array of the marks.
+To make matters simpler later, it also contains an array of the true waypoint names and their indexes.
+
+Any location with only a single mark can then be thinned out.
+
+Each location is then classified according to what it contains.
+The classifications are defined in the `classifications` structure.
+
+The locations are then sorted on classification so that subsequent processing is done class by class.
+
+=== `report()`
+
+The report is produced strictly from the structures build during the analysis.
+This discipline ensures that all information need is held within the structures.
+
+=== `WhatToDoA()`
+
+This function examines the structures and presents a dialogue with buttons for each kind of action for which there is an issue.
+
+Function 'doNaming()' identifies the button selected and makes the required changes.
+This requires information not available in the dialogue structure passed to the function.
+So this extra informartion is stashed in the savedData structure from where it can be accessed from the function.
+Each issue is shifted off the array of issues so that, when the dialogue is next presented, only buttons for remaining issues are displayed.
+
+When WhatToDoA has processed all structures, it calls WhatToDoB to deal with the location clusters.
+
+=== `WhatToDoB()`
+
+This function works through the locations, which have been sorted by location class.  For each location it presents a dialogue which differs for each class.
+The function used to process the button choice is also class-specific.
+
+=== Saving back to OpenCPN
+
+Finally, you can choose to save th updates back into OpenCPN.
+This is simply a matter of working through the `allpoints` and `routes` and updating or deleting them according to the action attribute.
