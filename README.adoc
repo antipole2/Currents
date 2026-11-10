@@ -24,9 +24,9 @@ Alternatively, you can fork the repository if you want to evolve the script.
 The script adds a route context menu with sub-menus which which themslvesvary with context.
 
 === Currents sub-menus
-[cols="2,2,3"]
+[cols="2,2,2"]
 |===
-|Context|Sub-mmenus|Function
+|Context|Sub-menus|Function
 
 |Route is not a currents working route|Select for current planning| Creates a working copy of the route.
 |Context is not part of a prediction|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint using a constant CTW to arrive at the next route point. The path is shown as a OpenCPN route named Predicted.
