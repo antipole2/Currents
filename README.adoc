@@ -1,20 +1,17 @@
-= Housekeeper
+= Currents
 :table-caption!:
 
 == What this script addresses
 
-A collection of OpenCPN waypoints and routes can become untidy and are not always what they seem.
-This script analyses your waypoints and routes and presents a report.
+When planning a passage, you may want to take account of currents.  For example,when crossing the English Channel, a boat is carried up and down the Channel by the tides.  Best practice is to steer a steady course through the water (CTW) such that it arrives at the destination.
 
-It then presents a series of dialogues allowing you to fix various issues.
-
-The script is structured in such a way that you can make the proposed changes and only save them back into OpenCPN at the end.
+This script can use a GRIB current prediction file to calculate a predicted route that can be steered with a constant CTW.
 
 == Installing the script
 
-This script needs JavaScript plugin v3.1 or later.
+This script needs JavaScript plugin v4.1 or later.
 
-1. Copy this URL to your clipboard (copy link - do not follow it) `https://raw.githubusercontent.com/antipole2/HouseKeeper/main/housekeeper.js`
+1. Copy this URL to your clipboard (copy link - do not follow it) `https://raw.githubusercontent.com/antipole2/Currents/main/currents.js`
 2. In a JavaScript console choose `Load` and then `URL on clipboard`.  The script should be loaded into the script pane.
 3. Choose `Run` to start the script.
 
