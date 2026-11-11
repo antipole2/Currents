@@ -7,6 +7,8 @@ When planning a passage, you may want to take account of currents.  For example,
 
 This script can use a GRIB current prediction file to calculate a predicted route that can be steered with a constant CTW.
 
+image::images/Crossing_with_prediction.png[]
+
 == Installing the script
 
 This script needs JavaScript plugin v4.1 or later.
