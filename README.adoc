@@ -9,8 +9,6 @@ This script can use a GRIB current prediction file to calculate a predicted rout
 
 [cols="34%,33%,33%", width=100%, frame=none, grid=none]
 |===
-
-|===
 a|
 The chart centre right shows a planned route for a passage from Chichester Harbour across the Channel to Cherbourg.
 
@@ -30,8 +28,6 @@ a|image::images/Inserted_prediction.png[Alt text, width=100%]
 |===
 
 [cols="34%,33%,33%", width=100%, frame=none, grid=none]
-|===
-
 |===
 a|
 Sometimes a passage is constrained.
