@@ -10,9 +10,12 @@ This script can use a GRIB current prediction file to calculate a predicted rout
 [cols="1,1", frame=none, grid=none]
 |===
 a|
-== About this project
+THe chart right shows a planned route for a passage from Chichester Harbour across the Channel to CHerbourg.
 
-Your text goes here. It can include multiple paragraphs, lists, and so on.
+Current planning is to commence from the routepoint named _Start_ off the east end of the Isle of Wight.
+In the absnce of currents, this reuires a course to steer of 100ºT.
+
+The Currents script has been used to calculate that we actually need a CTW of 102ºT and it has created a purple route showing the predicted track. 
 
 a|image::images/Crossing_with_prediction.png[Alt text, width=100%]
 |===
