@@ -6,16 +6,13 @@
 When planning a passage, you may want to take account of currents.  For example,when crossing the English Channel, a boat is carried up and down the Channel by the tides.  Best practice is to steer a steady course through the water (CTW) such that it arrives at the destination.
 
 This script can use a GRIB current prediction file to calculate a predicted route that can be steered with a constant CTW.
-
-image::images/Crossing_with_prediction.png[]
-
-[cols="1,2", frame=none, grid=none]
 |===
-a|image::images/Crossing_with_prediction.png[Alt text, 250]
-a|
-== About this project
+About this project
 
 Your text goes here. It can include multiple paragraphs, lists, and so on.
+==
+a|image::images/Crossing_with_prediction.png[Alt text, 250]
+a|
 |===
 
 
