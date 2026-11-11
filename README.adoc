@@ -20,9 +20,11 @@ The Currents script has been used to calculate that we actually need a HDG of 10
 The script has then been used to insert the predicted section into the route and it has displayed the ETA.
 See the chart on the far right.
 You could now sail that route and the HDG during the current orrected section should be a constant 102ºT.
+
 a|image::images/Crossing_with_prediction.png[Alt text, width=100%]
 
 a|image::images/Inserted_prediction.png[Alt text, width=100%]
+
 |===
 
 [cols="1,1,1", frame=none, grid=none]
@@ -49,6 +51,7 @@ You could now sail that route and the HDG during the current orrected section sh
 a|image::images/Restricted.png[Alt text, width=100%]
 
 a|image::images/Inserted_restricted.png[Alt text, width=100%]
+
 |===
 
 == Installing the script
