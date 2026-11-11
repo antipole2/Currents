@@ -9,6 +9,16 @@ This script can use a GRIB current prediction file to calculate a predicted rout
 
 image::images/Crossing_with_prediction.png[]
 
+[cols="1,2", frame=none, grid=none]
+|===
+a|image::images/Crossing_with_prediction.png[Alt text, 250]
+a|
+== About this project
+
+Your text goes here. It can include multiple paragraphs, lists, and so on.
+|===
+
+
 == Installing the script
 
 This script needs JavaScript plugin v4.1 or later.
