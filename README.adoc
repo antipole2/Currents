@@ -7,41 +7,38 @@ When planning a passage, you may want to take account of currents.  For example,
 
 This script can use a GRIB current prediction file to calculate a predicted route that can be steered with a constant HDG.
 
-[cols="1,1,1", frame=none, grid=none]
-|===
-a|
-The chart centre right shows a planned route for a passage from Chichester Harbour across the Channel to Cherbourg.
+The chart on the left shows a planned route for a passage from Chichester Harbour across the Channel to Cherbourg.
 
 Current planning is to commence from the routepoint named _Start_ off the east end of the Isle of Wight.
-In the absence of currents, this reuires a HDG of 100ºT.
+In the absence of currents, this requires a HDG of 100ºT.
 
 The Currents script has been used to calculate that we actually need a HDG of 102ºT and it has created a purple route showing the predicted track.
 
 The script has then been used to insert the predicted section into the route and it has displayed the ETA.
-See the chart on the far right.
-You could now sail that route and the HDG during the current orrected section should be a constant 102ºT.
+See the chart on the right.
+You could now sail that route and the HDG during the current corrected section should be a constant 102ºT.
 
-a|image::images/Crossing_with_prediction.png[Alt text, width=100%]
+image:images/Crossing_with_prediction.png[Planned route,470,752] image:images/Inserted_prediction.png[Route with prediction inserted,470,800]
 
-a|image::images/Inserted_prediction.png[Alt text, width=100%]
 
+[cols="1,1", width=100%, frame=none, grid=none]
+|===
+a|image::images/Crossing_with_prediction.png[Planned route, width=100%]
+a|image::images/Inserted_prediction.png[Route with prediction inserted, width=100%]
 |===
 
-[cols="1,1,1", frame=none, grid=none]
-|===
-a|
 Sometimes a passage is constrained.
 While crossing from Shetland to Norway, we needed to pass through a gap between two oil fields.
 
 The Currents script can handle predictions for any leg of a route.
-On the chart centre right, I have imagined a requirement to pass through such a gap and I have inserting two routepoints for this.
+On the chart on the left, I have imagined a requirement to pass through such a gap and have inserted two routepoints for this.
 I have then created predictions for the leg before the gap when the HDG is 209ºT and after the gap when the HDG is 203ºT.
-On the far right I have inserted both predictions into the route.
+On the right I have inserted both predictions into the route.
 
-a|image::images/Restricted.png[Alt text, width=100%]
-
-a|image::images/Inserted_restricted.png[Alt text, width=100%]
-
+[cols="1,1", width=100%, frame=none, grid=none]
+|===
+a|image::images/Restricted.png[Restricted route, width=100%]
+a|image::images/Inserted_restricted.png[Restricted route with predictions inserted, width=100%]
 |===
 
 == Installing the script
