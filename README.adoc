@@ -56,7 +56,7 @@ The script adds a route context menu which is used to contro its actions.  Sub-m
 |Route is not a currents working route|Select for current planning| Creates a working copy of the route.
 |Context is not part of a prediction|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint using a constant CTW to arrive at the next route point. The path is shown as a OpenCPN route named _Predicted_.
 .2+|Is a separate purple prediction called _Predicted_|Insert into route|Inserts the predicted course into the working route.
-||Delete prediction| Deletes the prediction.
+|Delete prediction| Deletes the prediction.
 |===
 
 
