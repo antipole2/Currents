@@ -45,10 +45,10 @@ Alternatively, you can fork the repository if you want to evolve the script.
 
 == What the script does
 
-The script adds a route context menu with sub-menus which which themslvesvary with context.
+The script adds a route context menu which is used to contro its actions.  Sub-menus vary with context and are as follows:
 
 === Currents sub-menus
-[cols="2,2,2"]
+[cols="33%,33%,33%"]
 |===
 |Context|Sub-menus|Function
 
