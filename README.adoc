@@ -49,7 +49,7 @@ The script adds a route context menu which is used to contro its actions.  Sub-m
 
 === Currents sub-menus
 
-[cols="33%,33%,33%"]
+[cols="1,1,1"]
 |===
 |Context|Sub-menus|Function
 
