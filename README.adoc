@@ -54,11 +54,14 @@ The script adds a route context menu which is used to contro its actions.  Sub-m
 |Context|Sub-menus|Function
 
 |Route is not a currents working route|Select for current planning|Creates a working copy of the route.
-|Context is not part of a prediction|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint using a constant CTW to arrive at the next route point. The path is shown as a OpenCPN route named _Predicted_.
-|Context is part of a prediction|Extract prediction|Extracts the predicted sectioninto a free=standing purple prediction and closesthe gap.
+|Context is not part of a prediction|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint +
+using a constant CTW to arrive at the next route point. +
+The path is shown as a purple OpenCPN route named _Predicted_.
+|Context is part of a prediction|Extract prediction|Extracts the predicted section into a free-standing purple prediction and closes the gap.
 .2+|Is a separate purple prediction called _Predicted_|Insert into route|Inserts the predicted course into the working route.
 |Delete prediction| Deletes the prediction.
-|Route is working route and includes custom speeds in routepoints|Reset speeds to plan default|Deletes any predictions in the route and resets speeds in routepoints to the route default.
+|Route is working route and includes custom speeds in routepoints|Reset speeds to plan default|Deletes any predictions in the route +
+resets speeds in routepoints to the route default.
 |===
 
 
