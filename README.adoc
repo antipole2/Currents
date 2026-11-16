@@ -30,7 +30,14 @@ Below right I have inserted both predictions into the route.
 
 image:images/Restricted.png[Restricted route,width=49%] image:images/Inserted_restricted.png[Restricted route with predictions inserted,width=49%]
 
+Sometimes a passage does not go to plan.
+You might need to tack, or, if becalmed for a while you might be carried off course.
+The script can recalculate the prediction when required.
 
+In the chart below left, the boat has strayed well west of the predicted and active route.
+The script has been given a revised Speed Through Water, recalculated a predicted route (shown below right).  It now advises to steer 194ºT and has given a revised ETA.
+
+image:images/Restricted.png[Restricted route,width=49%] image:images/Off-course.png[Corrected course,width=49%]
 == Installing the script
 
 This script needs JavaScript plugin v4.1 or later.
