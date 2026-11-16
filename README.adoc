@@ -38,6 +38,7 @@ In the chart below left, the boat has strayed well west of the predicted and act
 The script has been given a revised Speed Through Water, recalculated a predicted route (shown below right).  It now advises to steer 194ºT and has given a revised ETA.
 
 image:images/Off_course.png[Off course,width=49%] image:images/Corrected_course.png[Corrected course,width=49%]
+
 == Installing the script
 
 This script needs JavaScript plugin v4.1 or later.
