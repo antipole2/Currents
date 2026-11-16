@@ -14,6 +14,7 @@ contextSubMenu = require("contextSubMenu");
 require("mouseEvents");
 
 trace = false;
+traceIteration = false;
 
 // declarations start
 var contexMenuId;	// to hold the id of the context menu
@@ -36,17 +37,20 @@ function mouseEvent(click, where, what){
 			}
 		}
 	else {
+		var points = route.waypoints;
+		activePointIsPrediction = false;
 		if (route.isActive){
-			menu.add(updatePredictions, "Update predictions");
+			var activePoint = OCPNgetSingleWaypoint(OCPNgetActiveWaypointGUID());
+			if (unStashCb(activePoint.description)){ // active point is a prediction				
+				menu.add(updatePrediction, "Update prediction");
+				}
+			else {
+				if (hasCustomSpeed(points)) menu.add(resetRoute, "Reset speeds to plan default", 10);
+				}
 			}
 		else {
 			// check if route includes custom speeds
-			points = route.waypoints;
-			var found = false;
-			for (var p in points){
-				if (points[p].plannedSpeed != 0) found = true;
-				}
-			if (found) menu.add(resetRoute, "Reset speeds to plan default", 10);
+			if (hasCustomSpeed(points)) menu.add(resetRoute, "Reset speeds to plan default", 10);
 			// Are we on a prediction section?
 			var indexBefore = getPointBefore(points, where);
 			var cb = unStashCb(points[indexBefore].description);
@@ -62,6 +66,7 @@ function mouseEvent(click, where, what){
 				}
 			}
 		}
+	if (menu.length == 0) menuAdd(noAction, "No actions");
 	contexMenuId = OCPNonRouteContextMenu(menu, "Currents");
 	}
 
@@ -151,41 +156,10 @@ function plan(route, fromPoint){	// created current predicted legs starting from
 	// create array of points forecast between startWp and endWp
 	if (trace) print("startWp: ", startWp, "\n");
 	var stw = startWp.plannedSpeed; // speed through water
-	vector = OCPNgetVectorPP(startWp.position, endWp.position);
+	overallVector = OCPNgetVectorPP(startWp.position, endWp.position);
 	targetBearing = overallVector.bearing;	// what we should stear if no current
 	if (trace) print("Overall vector: ", overallVector, "\n");
-	steer = targetBearing;
-	for (var iteration = 1; iteration <= 4; iteration++){	// we iterate to tune the outcome
-		forecast = createForecastSegment(startWp, endWp, steer, stw, stepTime, doCurrents = true, iteration);
-		if (false){	// only when debugging
-			print("Forecast has ", forecast.length, " points\n");
-			// we will display each iteration
-			var predicted = new Route();
-			predicted.name = "Predicted iteration " + iteration;
-			predicted.waypoints = forecast;
-			predicted.isVisible = true;
-			predicted.colour = "Magenta";
-			predicted.penStyle = 101; // dashed line
-			OCPNaddRoute(predicted);
-			}
-		newBearing = OCPNgetVectorPP(startWp.position, forecast[forecast.length-1].position).bearing;
-		if (trace) print("Bearings ", iteration, " target bearing ", steer, "\tended at ", newBearing, "\n");
-		var error = targetBearing - newBearing;
-		if (trace) print("Bearings ", iteration, " error ", error, "\n"); 
-		if (Math.abs(error) <= errorDegrees) break; // ************************
-		steer += error;
-		if (steer > 360) steer -= 360;
-		if (steer < 0) steer += 360;
-		if (trace) print("Bearings ", iteration, " Adjusting to ", steer, "\n");
-		}
-	//  Need to ensure last point splices into original route
-	vectorToEndWp = OCPNgetVectorPP(forecast[forecast.length-1].position, endWp.position);
-	if (trace) printBlue("Drop last? vectorToEndWp:", vectorToEndWp, "\thalf step:", stw*stepTime/2, "\tvector.bearing:", vector.bearing, "\n");
-	if ((vectorToEndWp.distance < stw*stepTime/2) // less than half a step)
-		|| (Math.abs(vector.bearing - vectorToEndWp.bearing) > 20)){	// limit in change of direction (degrees)
-		if (trace) print("Dropping last point\n");
-		forecast.pop();	// drop last point
-		}
+	var forecast = generatePrediction(startWp, endWp, stw, stepTime, doCurrents=true);
 	var predicted = new Route();
 	predicted.name = "Predicted";
 	predicted.waypoints = forecast;
@@ -200,21 +174,51 @@ function plan(route, fromPoint){	// created current predicted legs starting from
 	predicted.addWithCb();
 	if (route.cb.state == "NCP"){ // first prediction
 		route.cb.state = "HCP";
-		route.cb.predictions = [];
+		//		route.cb.predictions = [];
 		}
-	route.cb.predictions.push({startGUID: startWp.GUID, endGUID: endWp.GUID});
+	//	route.cb.predictions.push({startGUID: startWp.GUID, endGUID: endWp.GUID});
 	route.updateWithCb();
-	announcer.alert("Course to steer " + steer.toFixed(0) + "ºT though the water", 6000);
-	
 	}
 
-/*
-function disclose(what){
-var vector = getCurrent(what, new Date(2026, 07, 29, 02, 00, 00));
-printBlue(vector, "\n");
-return;
-}
-*/
+function generatePrediction(startWp, endWp, stw, stepTime, doCurrents){
+	// returns routepoints being prediction
+	var targetBearing = OCPNgetVectorPP(startWp.position, endWp.position).bearing;
+	var steer = targetBearing;
+	for (var iteration = 1; iteration <= 4; iteration++){	// we iterate to tune the outcome
+		forecast = createForecastSegment(startWp, endWp, steer, stw, stepTime, doCurrents);
+		
+		if (false){	// only when debugging
+			print("Forecast has ", forecast.length, " points\n");
+			// we will display each iteration
+			var predicted = new Route();
+			predicted.name = "Predicted iteration " + iteration;
+			predicted.waypoints = forecast;
+			predicted.isVisible = true;
+			predicted.colour = "Magenta";
+			predicted.penStyle = 101; // dashed line
+			OCPNaddRoute(predicted);
+			}
+		newBearing = OCPNgetVectorPP(startWp.position, forecast[forecast.length-1].position).bearing;
+		var error = targetBearing - newBearing;
+		if (traceIteration) print("Iteration ", iteration, " target bearing ", steer, "\tended with ", newBearing, " error: ", error,"\n");
+		if (Math.abs(error) <= errorDegrees) break; // ************************
+		steer += error;
+		if (steer > 360) steer -= 360;
+		if (steer < 0) steer += 360;
+		if (traceIteration) print("Iteration ", iteration, " Adjusting to steer: ", steer, "\n");
+		}
+	//  Need to ensure last point splices into original route
+	var finalVector = OCPNgetVectorPP(forecast[forecast.length-2].position, forecast[forecast.length-1].position);
+	vectorToEndWp = OCPNgetVectorPP(forecast[forecast.length-1].position, endWp.position);
+	if (trace) printBlue("Drop last? vectorToEndWp:", vectorToEndWp, "\thalf step:", stw*stepTime/2, "\tfinalVector.bearing:", finalVector.bearing, "\n");
+	if ((vectorToEndWp.distance < stw*stepTime/2) // less than half a step)
+		|| (Math.abs(finalVector.bearing - vectorToEndWp.bearing) > 90)){	// limit in change of direction (degrees)
+		if (trace) print("Dropping last point\n");
+		forecast.pop();	// drop last point
+		}
+	announcer.alert("Course to steer " + steer.toFixed(0) + "ºT though the water", 6000);
+	return forecast;
+	}
 
 function getCurrent(where, when){	// time is Unix time
 	var time = new Date(when);
@@ -248,23 +252,22 @@ function getCurrent(where, when){	// time is Unix time
 	return("Current: ", {"direction": parsed["CURRENT DIR"], "speed": parsed["CURRENT SPEED"]});
 	}
 
-function createForecastSegment(startWp, targetWp, heading, stw, stepTime, doCurrents, iteration){
+function createForecastSegment(startWp, targetWp, steer, stw, stepTime, doCurrents, iteration){
 	// return a waypoint array being forecast path from startWp towards targetWp
 	// (startWp must include plannedDeparture time in seconds since 1 Jan 1970)
-	// heading - course to steer through water
 	// stw is speed through water in knots
+	// what to steer through water
 	// stepTime is duration of each step in hours
-	// if doCurrents true, adjust for currents
-	
+	// if doCurrents true, adjust for currents	
 	if (trace){ print("Entered createForecastSegment\n");
-		print("From: ", startWp.position, " to ", targetWp.position, " heading ", heading, " at ", stw, "kn step time: ", stepTime, "hrs doCurrents: ", doCurrents, "\n");
+		print("From: ", startWp.position, " to ", targetWp.position, " at ", stw, "kn step time: ", stepTime, "hrs doCurrents: ", doCurrents, "\n");
 		}
 	
 	var forecast = [];	//to be the array of points
 	var overallVector = OCPNgetVectorPP(startWp.position, targetWp.position);
-	var stepVector = {bearing:heading, distance: stw*stepTime};
-	var halfStepVector = {bearing: stepVector.bearing, distance: stepVector.distance/2};
 	var distanceToGo = overallVector.distance;
+	var stepVector = {bearing:steer, distance: stw*stepTime};
+	var halfStepVector = {bearing: stepVector.bearing, distance: stepVector.distance/2};
 	var lastWp = startWp;
 	var step = 0;
 	var missingCurrent = 0;
@@ -359,22 +362,19 @@ function findPointInWaypoints(waypoints, pointGuid){ // returns offset of routep
 	throw("findPointInRoute called with non-existant point GUID");
 	}
 
-/*
-function mightResetRoute(){	// check for change in OCPN's copy
-var copy = OCPNgetRoute(route.GUID);
-for (point in copy.waypoints){
-if (copy.waypoints[point].plannedSpeed != 0) return true;
-}
-return false;
-}
-*/
-
 function havePredictions(waypoints){	// check if waypoints include predictions;
 	for (p in waypoints){
 		if (unStashCb(waypoints[p].description)) return true;
 		}
 	return false;
 	}
+
+function hasCustomSpeed(points){ // check if include custom speeds
+	var found = false;
+	for (var p in points){
+		if (points[p].plannedSpeed != 0) return true;
+		}
+	return false}
 
 function resetRoute(what){ // resets route
 	if (trace) print("Resetting STW for route\n");
@@ -390,7 +390,12 @@ function resetRoute(what){ // resets route
 			if (unStashCb(waypoints[p].description))	waypoints.splice(p, 1);
 			}
 		}
-	for (var p in waypoints) waypoints[p].plannedSpeed = 0;
+	for (var p in waypoints){
+		if (waypoints[p].plannedSpeed != 0){
+			waypoints[p].plannedSpeed = 0;
+			OCPNupdateSingleWaypointwaypoints[p];
+			}
+		}
 	route.cb.state = "NCP";
 	route.cb.hash = hashOfRoute(route);
 	route.updateWithCb();	
@@ -434,7 +439,45 @@ function deletePrediction(what){	// delete free-sanding prediction
 	}
 
 function updatePrediction(what){	// update free-standing prediction with real-time position
-	announcer.alert("Would update prediction", 10);
+	announcer.alert("Will update prediction", 10);
+	var route = new Route();
+	route.getWithCb(what.GUID);
+	var points = route.waypoints;
+	var index = getPointBefore(points, what);
+	var startWp = points[index];
+	// find end of forecast
+	var nextIndex = index;
+	while (unStashCb(points[nextIndex].description)) {nextIndex++;}
+	var endWp = points[nextIndex];
+	// synthesise a wp for where we are now
+	var navigation = OCPNgetNavigation();
+	var hereWp = copyObject(startWp);
+	hereWp.position = navigation.position;
+	var time = navigation.fixTime;
+	if (isNaN(navigation.HDT))time = startWp.estimatedDeparture; // must be simulating - pick what is available
+	var headingToTarget  = OCPNgetVectorPP(hereWp.position, endWp.position).bearing;
+	var stw = hereWp.plannedSpeed;
+	var choices = [2.0, (Math.round(stw*2*10))/10];	// round to 1 decimal place
+	var dialog = [
+		{type:"text", value:"Estimate speed through water"},
+		{type:"spinner", range:choices, value:(Math.round(stw*10))/10, label:"knots"},
+		{type:"button", label:["*Choose"]}
+		];
+	var choice = modalDialogue(dialog);
+	stw = choice[1].value; //now have confirmed value for stw
+	
+	var forecast = generatePrediction(hereWp, endWp, stw, stepTime, doCurrents=true);
+	forecast.unshift(hereWp);	// revised track to pass through where we are
+	var before = points.slice(0, index); // keep these parts
+	var after = points.splice(nextIndex);
+	if (trace) print(before[before.length-1].markName, "\n")
+	if (trace) printBlue(after[0].markName, "\n");
+	points = before.concat(forecast, after); //insert prediction
+	if (trace) print("Inserted ", forecast.length, " points\n");
+	route.waypoints = points;
+	if (trace) print("Route '", route.name, "' with GUID ", route.GUID, " now has ", route.waypoints.length, " points\n\n");
+	route.updateWithCb();
+	reportETA(points, route.plannedSpeed, time, index+2);
 	}
 
 function insertPredicted(what){
@@ -463,10 +506,8 @@ function insertPredicted(what){
 	if (trace) print("Route '", route.name, "' with GUID ", route.GUID, " now has ", route.waypoints.length, " points\n\n");
 	route.updateWithCb();
 	predicted.delete();
-	
-	// now calculate the ETA
-	waypoints = route.waypoints;
-	var eta = route.plannedDeparture;	// seconds since 1 Jan 1970
+	reportETA(waypoints, route.plannedSpeed, route.plannedDeparture, 0);
+/*
 	for (var p = 0; p < waypoints.length-1; p++){  // NB omits last
 		var stw = waypoints[p].plannedSpeed;	// speed through water
 		if (stw == 0) stw = route.plannedSpeed;
@@ -480,7 +521,29 @@ function insertPredicted(what){
 			}
 		}
 	announcer.alert("ETA " + new Date(eta * 1000), 1000000);
+*/
 	}
+
+function reportETA(waypoints, plannedSpeed, startTime, fromIndex){
+	// planned speed - route plabnned speed as default
+	// startTime - time from which we start
+	// index from which to calculate
+	var eta = startTime;
+	for (var p = 0; p < waypoints.length-1; p++){  // NB this omits last
+		var stw = waypoints[p].plannedSpeed;	// speed through water
+		if (stw == 0) stw = plannedSpeed;
+		if (!unStashCb(waypoints[p].description)){ // not a prediction
+			var distance = OCPNgetVectorPP(waypoints[p].position, waypoints[p+1].position).distance;
+			var speed = waypoints[p].plannedSpeed;
+			eta += distance/speed*60*60;
+			}
+		else {	// this is predicted leg
+			eta += stepTime*60*60;
+			}
+		}
+	announcer.alert("ETA " + new Date(eta * 1000), 1000000);
+	}
+
 
 announcer = {
 	// announcer object handles alerts with time limit to display each message
@@ -543,6 +606,7 @@ function getPointBefore(waypoints, position){
 
 function stashCb(description, cb){
 	// stash control block cb into a route or waypoint object
+	
 	description = description.replace(/ *cb={.*}/, ""); // drop any existing stash
 	description += " cb=" + JSON.stringify(cb);
 	return description;
@@ -565,8 +629,10 @@ function unStashCb(description){
 	return cb;
 	}
 
+function noAction(){;}
+
 function currentVectorToString(vector){
-	if (trace print(vector, "\n");
+	if (trace) print(vector, "\n");
 	// format vector as nice string for display
 	var result = {};
 	result.distance = vector.distance.toFixed(2);	
