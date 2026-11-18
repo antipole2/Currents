@@ -58,6 +58,7 @@ Alternatively, you can fork the repository if you want to evolve the script.
 .. Set the planned speed for the route - this becomesthe default speed for the route
 .. If you foresee different speeds for different lesg, you can set their spped in the route points
 . Get the forecast currents using the _grib_ or _xgrib_ plugin.  These need to cover the whole route and its timespan.
+Having the plugin active with the the required grib file is sufficient.  You do not need the currents visible on the chart.
 
 === Sources current predictions inlude
 
