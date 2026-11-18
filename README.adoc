@@ -60,7 +60,7 @@ Alternatively, you can fork the repository if you want to evolve the script.
 . Get the forecast currents using the _grib_ or _xgrib_ plugin.  These need to cover the whole route and its timespan.
 Having the plugin active with the the required grib file is sufficient.  You do not need the currents visible on the chart.
 
-=== Sources current predictions inlude
+=== Sources of current predictions inlude:
 
 * link:https://marine.copernicus.eu[Copernicus]
 * link:https://www.bsh.de/EN/DATA/Predictions/Currents/Surface_currents_for_sailors/surface_currents_for_sailors_node.html[German Hyrographic Office]
@@ -95,5 +95,7 @@ resets speeds in routepoints to the route default.
 == About the script
 
 This script is complex.
-There is a link:https://github.com/antipole2/Housekeeper/blob/main/Housekeeper_tech_guide.adoc[technical description] that documents how the script works.
+There is a link:https://github.com/antipole2/Housekeeper/blob/main/Currents.adoc[technical description] that documents how the script works.
 You should familiarise yourself with this before attempting to modify it.
+
+The decription also covers some of the techniques used, which might be useful for those developing other scripts.
