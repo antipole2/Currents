@@ -63,7 +63,7 @@ Alternatively, you can fork the repository if you want to evolve the script.
 
 * link:https://marine.copernicus.eu[Copernicus]
 * link:https://www.bsh.de/EN/DATA/Predictions/Currents/Surface_currents_for_sailors/surface_currents_for_sailors_node.html[German Hyrographic Office]
-* Irish current predictions good for Ireland and as far east as the Isle of Wight.  https://www.cruisersforum.com/forums/f134/irish-hourly-tidal-current-gribs-200341.html#post2634287{See here.]
+* Detailed Irish current predictions are good for Ireland and as far east as the Isle of Wight.  https://www.cruisersforum.com/forums/f134/irish-hourly-tidal-current-gribs-200341.html#post2634287[See here.]
 
 == What the script does
 
