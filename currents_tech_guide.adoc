@@ -17,6 +17,7 @@ Each sub-menu sets up a callback to the appropriate handler.
 
 The script keeps data about each route or routepoint in a control block like `route.cb`.
 This always includes .state, which is a text string which is one of:
+
 * NCP route has no current predictions
 * HCP route has (or has had) current predictions inserted
 * ICC route is a freestanding prediction, displayed in purple by default
