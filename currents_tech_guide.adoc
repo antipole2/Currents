@@ -11,12 +11,12 @@ These are created dynamically, once the context is known.
 
 The script sets up a repeating callback to the function `mouseEvent` when there is a right-click (or control-click).
 This fuction examines the context and creates the route context menu with the appropraite sub-menus.
-Each sub-menu sets up a callback to the appropraiet handler.
+Each sub-menu sets up a callback to the appropriate handler.
 
 == The control block
 
 The script keeps data about each route or routepoint in a control block like `route.cb`.
-cb always includes .state, which is a text string
+This always includes .state, which is a text string which is one of:
 * NCP route has no current predictions
 * HCP route has (or has had) current predictions inserted
 * ICC route is a freestanding prediction, displayed in purple by default
