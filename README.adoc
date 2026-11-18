@@ -51,6 +51,18 @@ If you want to run the script when not online, you will need to save it to a loc
 
 Alternatively, you can fork the repository if you want to evolve the script.
 
+== Preparation
+
+. Prepare your route
+.. Set the start time as the time you will beat the first routepoint (not your depature towardsthe first point)
+.. Set the planned speed for the route - this becomesthe default speed for the route
+.. If you foresee different speeds for different lesg, you can set their spped in the route points
+. Get the forecast currents using the _grib_ or _xgrib_ plugin.  These need to cover the whole route and its timespan.
+
+=== Sources current predictions inlude
+
+* link:https://auth.marine.copernicus.eu[Copernicus]
+
 == What the script does
 
 The script adds a route context menu which is used to contro its actions.  Sub-menus vary with context and are as follows:
