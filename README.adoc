@@ -95,7 +95,7 @@ resets speeds in routepoints to the route default.
 == About the script
 
 This script is complex.
-There is a link:https://github.com/antipole2/Housekeeper/blob/main/Currents.adoc[technical description] that documents how the script works.
+There is a link:https://github.com/antipole2/Housekeeper/blob/main/currents_tech_guide.adoc[technical description] that documents how the script works.
 You should familiarise yourself with this before attempting to modify it.
 
 The decription also covers some of the techniques used, which might be useful for those developing other scripts.
