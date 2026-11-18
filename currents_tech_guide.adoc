@@ -41,5 +41,5 @@ Access to routes in OpenCPN is all through the plugin's Route object.
 These include `.add`, `.add` and `.get` methods to access OpenCPN.
 
 The function `extendedRouteConstructor` extends the Route object to include additional methods `.addWithCb`, `.addWithCb` and `.getWithCb`.
-When saving to OpenCPN, these handle stashing cb into .description.
-When fetching a route from OpenCPN, the .getWithCb method gets the route, unstashes the cb and adds it to the route inthe script.
+When saving to OpenCPN, these handle stashing cb into `.description`.
+When fetching a route from OpenCPN, the `.getWithCb` method gets the route, unstashes the cb and adds it to the route in the script.
