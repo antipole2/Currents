@@ -66,6 +66,7 @@ Initialises route for current predictions.
 |Context is not part of a prediction|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint +
 using a constant CTW to arrive at the next route point. +
 The path is shown as a purple OpenCPN route named _Predicted_.
+.2+|Regenerate prediction|Regenerates the prediction and replaces the purple route.
 .2+|Is a separate purple prediction called _Predicted_|Insert into route|Inserts the predicted course into the working route.
 |Delete prediction| Deletes the prediction.
 |Context is part of a prediction|Extract prediction|Extracts the predicted section into a free-standing purple prediction and closes the gap.
