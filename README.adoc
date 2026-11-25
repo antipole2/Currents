@@ -78,8 +78,8 @@ The script adds a route context menu which is used to contro its actions.  Sub-m
 
 |Route is not a currents working route|Select for current planning|If Yes selected, creates a working copy of the route. +
 Initialises route for current predictions.
-|Context is not part of a prediction
-.2+|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint +
+.2+|Context is not part of a prediction
+|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint +
 using a constant CTW to arrive at the next route point. +
 The path is shown as a purple OpenCPN route named _Predicted_.
 |Show route info|Shows the planned start and predicted end time following any predicted sections +
