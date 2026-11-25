@@ -79,12 +79,11 @@ The script adds a route context menu which is used to contro its actions.  Sub-m
 |Route is not a currents working route|Select for current planning|If Yes selected, creates a working copy of the route. +
 Initialises route for current predictions.
 .2+|Context is not part of a prediction
-|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint +
-using a constant CTW to arrive at the next route point. +
+|Create prediction|Generates a predicted path from the preceeding routepoint to the next routepoint using a constant CTW to arrive at the next route point. +
 The path is shown as a purple OpenCPN route named _Predicted_.
 |Show route info|Shows the planned start and predicted end time following any predicted sections +
 If the point is on an inerted section, it shows the course to steer. +
-If it is not on an inserted section it shows the bearing to the next route point.
+If it is not on an inserted section it shows the bearing to the next routepoint.
 .4+|Is a separate purple prediction called _Predicted_
 |Insert into route|Inserts the predicted course into the working route.
 |Regenerate prediction|Regenerates the prediction and replaces the purple route.
