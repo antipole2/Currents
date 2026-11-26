@@ -54,13 +54,13 @@ Alternatively, you can fork the repository if you want to evolve the script.
 == Preparation
 
 . Prepare your route
-.. Set the start time as the time you will beat the first routepoint (not your depature towardsthe first point)
+.. Set the start time as the time you will beat the first routepoint (not your departure towardsrthe first point)
 .. Set the planned speed for the route - this becomes the default speed for the route
 .. If you foresee different speeds for different lesg, you can set their spped in the route points
 . Get the forecast currents using the _grib_ or _xgrib_ plugin.  These need to cover the whole route and its timespan.
 Having the plugin active with the the required grib file is sufficient.  You do not need the currents visible on the chart.
 
-NB There is an link:https://github.com/OpenCPN/OpenCPN/issues/5575[issue with OpenCPN] when a route is used in varying time zones.  The start time ay be confusing.
+NB There is an link:https://github.com/OpenCPN/OpenCPN/issues/5575[issue with OpenCPN] when a route is used in varying time zones.  The start time may be confused.
 
 === Sources of current predictions inlude:
 
