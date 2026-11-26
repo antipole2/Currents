@@ -10,8 +10,15 @@ The script is controlled through sub-menus of the Currents route context menu.
 These are created dynamically, once the context is known.
 
 The script sets up a repeating callback to the function `mouseEvent` when there is a right-click (or control-click).
-This fuction examines the context and creates the route context menu with the appropraite sub-menus.
+This fuction examines the context and creates the route context menu with the appropriate sub-menus.
 Each sub-menu sets up a callback to the appropriate handler.
+
+== Route caching
+
+The script accesses routes many times.
+To optimise this, the latest route accessed is cached.
+The `getRoute` function looks in the cache first and only fetches a fresh copy if there is no match.
+The cache expires after 1.5 seconds in case the user changes the route directly.
 
 == The control block
 
@@ -30,11 +37,14 @@ Here is an example for a free-standing prediction:
 * fromGUID is the routepoint GUID within the parent route after which it should be inserted
 * toGUID is the routepoint GUID within the parent route before which it should be inserted
 
+Route control blocks also include a hash of the route (excluding the .description attribute.
+This was included to allow for checking if a route has been modified by the user but is not being used at this time.
+
 == Storing the control block within OpenCPN
 
 These additional attributes of a route or routepoint have no equivalent in OpenCPN.
-In order to save them, they are stored within the objects .description attribute as a JSON string.
-They are stored after any other text within the description attribute.
+In order to save them, they are stored within the object's .description attribute as a JSON string.
+They are located after any other text within the description attribute.
 
 Access to routes in OpenCPN is all through the plugin's Route object.
 (See the User Guide for a description of these.)
@@ -43,3 +53,8 @@ These include `.add`, `.add` and `.get` methods to access OpenCPN.
 The function `extendedRouteConstructor` extends the Route object to include additional methods `.addWithCb`, `.addWithCb` and `.getWithCb`.
 When saving to OpenCPN, these handle stashing cb into `.description`.
 When fetching a route from OpenCPN, the `.getWithCb` method gets the route, unstashes the cb and adds it to the route in the script.
+
+== Garbage Collection
+
+Several operations use and release a substantial number of variables.
+While Duktape takes care of garbage collection, it is done exlicitly after significant work.
