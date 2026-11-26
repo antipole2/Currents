@@ -1,6 +1,6 @@
 {	"name":"Currents",
 	"version":"0.1",
-	"date":"11 Nov 2026",
+	"date":"28 Nov 2026",
 	"script": "https://raw.githubusercontent.com/antipole2/currents/main/currents.js",
 	"new":"First beta release",
 	"pluginMinVersion": "4.1",	
