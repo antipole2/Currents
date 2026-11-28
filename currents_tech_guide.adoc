@@ -58,3 +58,10 @@ When fetching a route from OpenCPN, the `.getWithCb` method gets the route, unst
 
 Several operations use and release a substantial number of variables.
 While Duktape takes care of garbage collection, it is done exlicitly after significant work.
+
+== Note on calculating Estimated Time of Arrival (ETA)
+
+When in a forecast leg, the leg length and speed through the water (STW) cannot be used to calculate the time taken, because this is affected by the current.
+The forecast legs are delibertely generated with a fixed time interval if there werre no current (`stepTime`).
+So the ETA calculation can simply use that time for these legs.
+For legs outside the predicted sections, the usual distance/speed is used.
